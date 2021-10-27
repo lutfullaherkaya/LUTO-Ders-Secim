@@ -1,0 +1,122 @@
+#ders-listesi {
+  /* ders secim containerinin genisligi 800px olmasından mütevellit */
+  width: calc((100vw - 800px) / 2 - 29px);
+  margin: 10px;
+  overflow: hidden;
+  height: calc(100vh - 20px);
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: white;
+  z-index: 9999;
+  transition: all 0.8s ease-in-out;
+  text-align: center;
+}
+
+
+#ders-listesi button {
+  background: #980000;
+  color: #ffffff;
+  padding: 1px 2px 1px 2px;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid black;
+}
+
+#ders-listesi button:hover {
+  background: #8c0202;
+  text-decoration: none;
+}
+
+
+#baslik-kutusu {
+  height: 77px;
+  background-color: #980000;
+}
+
+#luto-logo {
+  position: relative;
+  top: 10px;
+  left: 10px;
+}
+
+#baslik-yazisi {
+  position: relative;
+  top: 16px;
+  color: white;
+  font: 30px "Trebuchet MS", "Lucida Sans Unicode", Arial, sans-serif;
+  font-weight: bold;
+  text-align: center;
+}
+
+#dersler {
+  margin-top: 10px;
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+#dersler th,
+#dersler td {
+  border: 1px solid black;
+  color: black !important;
+  font: 11px "Trebuchet MS", "Lucida Sans Unicode", Arial, sans-serif;
+}
+
+
+
+.gizli {
+  display: none;
+}
+.formum {
+  margin: 10px;
+  
+  color: black !important;
+  text-align:left;
+}
+
+
+.formum > label {
+  font-weight: bold;
+}
+
+#benim-footer {
+  height: 56px;
+  background-color: #980000;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+#benim-footer span{
+  position: relative;
+  
+  top: 20px;
+}
+#benim-footer a{
+  color: white !important;
+  position: initial;
+}
+
+#ders-listesi-kontrol-paneli {
+/*  position: absolute;
+  bottom: 76px;
+  left: 20px;*/
+}
+
+#daraltma-butonu {
+  position: absolute;
+  bottom: 76px;
+  right: 20px;
+  font-size: 40px;
+  width: 54px;
+  background-color: rgb(255, 255, 255);
+  border: none;
+  color: #980000;
+  cursor: pointer;
+  
+}
+
+#daraltma-butonu:hover {
+  background-color: rgba(143, 7, 7, 0.79);
+}

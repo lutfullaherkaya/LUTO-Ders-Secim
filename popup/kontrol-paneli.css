@@ -1,0 +1,30 @@
+html, body {
+
+}
+
+.hidden {
+  display: none;
+}
+
+.button {
+  margin: 3% auto;
+  padding: 4px;
+  text-align: center;
+  font-size: 1.5em;
+  cursor: pointer;
+}
+
+.formum {
+  float: left;
+  margin-right: 20px;
+  margin-bottom: 15px;
+  
+}
+
+.formum > label {
+  font-weight: bold;
+}
+
+#dersler td, #dersler th {
+  padding: 5px;
+}
