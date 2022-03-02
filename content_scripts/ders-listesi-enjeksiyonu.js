@@ -230,7 +230,7 @@ class Ders {
         dersSecButonu.type = "button";
         dersSecButonu.innerHTML = "Seç";
         dersSecButonu.addEventListener("click", () => {
-            Ders.otomatikSec();
+            Ders.listesi[dersIndeksi].secimFormunuDoldur().sec();
         });
         satir.insertCell(-1).appendChild(dersSecButonu);
 
