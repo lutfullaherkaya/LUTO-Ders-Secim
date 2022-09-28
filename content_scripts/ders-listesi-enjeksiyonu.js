@@ -2,11 +2,13 @@ function localStorageGetItemMessage(key) {
     return new Promise((resolve, reject) => {
         chrome.runtime.sendMessage({
             komut: "getItem",
-            key: key
+            key: key,
         }, response => {
-            if(response.veri === "true") {
+            if (response.veri === "true") {
+                console.log('bura:', response.item);
                 resolve(response.item);
-            } else {
+            }
+            else {
                 reject('localStorageGetItem fonksiyonu localstorageden itemi alamadi.');
             }
         });
@@ -18,18 +20,17 @@ function localStorageSetItemMessage(key, value) {
         chrome.runtime.sendMessage({
             komut: "setItem",
             key: key,
-            value: value
+            value: value,
         }, response => {
-            if(response.veri === "true") {
+            if (response.veri === "true") {
                 resolve(true);
-            } else {
+            }
+            else {
                 reject('localStorageGetItem fonksiyonu localstorageye itemi yazamadı.');
             }
         });
     });
 }
-
-
 
 class Ders {
     static listesi = [];
@@ -71,7 +72,7 @@ class Ders {
                 section: ders.bilgiler.get("section"),
                 kategoriNo: ders.bilgiler.get("kategoriNo"),
                 kategori: ders.bilgiler.get("kategori"),
-                alinmaDurumu: ders.bilgiler.get("alinmaDurumu")
+                alinmaDurumu: ders.bilgiler.get("alinmaDurumu"),
             }
         });
         localStorageSetItemMessage("dersler", JSON.stringify(dersler));
@@ -79,6 +80,10 @@ class Ders {
 
     static async listesiniYukle() {
         let dersler = await localStorageGetItemMessage("dersler");
+        /*let dersler = null;
+        await chrome.storage.sync.get(['dersler'], function (result) {
+            dersler = result['dersler'];
+        });*/
         if (dersler) {
             JSON.parse(dersler).forEach(ders => (new Ders(
                     ders.ad,
@@ -86,7 +91,7 @@ class Ders {
                     ders.section,
                     ders.kategoriNo,
                     ders.kategori,
-                    ders.alinmaDurumu
+                    ders.alinmaDurumu,
                 ).ekle()
             ));
         }
@@ -114,7 +119,8 @@ class Ders {
                 if (eskiKayitliDersSayisi < Ders.kayitliDersSayisi()) {
                     Ders.listesi[i].bilgiler.set("alinmaDurumu", "alindi");
                     Ders.satirRenginiDegistir(i + 1, "yesil");
-                } else {
+                }
+                else {
                     Ders.listesi[i].bilgiler.set("alinmaDurumu", "alinamadi");
                     Ders.satirRenginiDegistir(i + 1, "kirmizi");
                 }
@@ -138,7 +144,7 @@ class Ders {
         let renkler = {
             kirmizi: "#ff000073",
             yesil: "#2dbd3599",
-            beyaz: "#ffffff"
+            beyaz: "#ffffff",
         }
         let derslerTablosu = document.getElementById("dersler");
         derslerTablosu.rows[satirIndeksi].style.backgroundColor = renkler[renk];
@@ -179,13 +185,12 @@ class Ders {
             console.log("dersIndeksi:" + dersIndeksi);
             if (dersIndeksi > 0) {
                 let gecici = Ders.listesi[dersIndeksi];
-                Ders.listesi[dersIndeksi] = Ders.listesi[dersIndeksi-1];
-                Ders.listesi[dersIndeksi-1] = gecici;
+                Ders.listesi[dersIndeksi] = Ders.listesi[dersIndeksi - 1];
+                Ders.listesi[dersIndeksi - 1] = gecici;
                 Ders.listesiniKaydet();
                 Ders.listesiniStoragedenGuncellemeMesajiGonderArkaplana();
             }
         });
-
 
         let asagiKaydirButonu = document.createElement("button");
         asagiKaydirButonu.type = "button";
@@ -195,8 +200,8 @@ class Ders {
             console.log("ders sayisi:" + Ders.listesi.length);
             if (dersIndeksi < Ders.listesi.length - 1) {
                 let gecici = Ders.listesi[dersIndeksi];
-                Ders.listesi[dersIndeksi] = Ders.listesi[dersIndeksi+1];
-                Ders.listesi[dersIndeksi+1] = gecici;
+                Ders.listesi[dersIndeksi] = Ders.listesi[dersIndeksi + 1];
+                Ders.listesi[dersIndeksi + 1] = gecici;
                 Ders.listesiniKaydet();
                 Ders.listesiniStoragedenGuncellemeMesajiGonderArkaplana();
             }
@@ -216,8 +221,6 @@ class Ders {
         ayarButonlari.appendChild(yukariKaydirButonu);
         ayarButonlari.appendChild(silButonu);
         satir.insertCell(-1).appendChild(ayarButonlari);
-
-
 
         this.bilgiler.forEach((bilgi, anahtar) => {
             if (anahtar !== "kategoriNo" && anahtar !== "alinmaDurumu") {
@@ -262,12 +265,9 @@ class Ders {
         return this;
     }
 
-
 }
 
-
-
-(function() {
+(function () {
 
     /**
      * Check and set a global guard variable.
@@ -280,14 +280,15 @@ class Ders {
     window.hasRun = true;
     var browser = chrome;
 
-    async function htmlIndir(url="/content_scripts/ders-listesi-enjeksiyonu.html") {
+    async function htmlIndir(url = "/content_scripts/ders-listesi-enjeksiyonu.html") {
         return fetch(chrome.runtime.getURL(url)).then(r => r.text());
     }
 
     function dersListesiniAcKapa(acalimMi) {
         if (acalimMi) {
             app.style.left = "0";
-        } else {
+        }
+        else {
             app.style.left = "calc((-1 * (100vw - 800px) / 2 - 29px))";
         }
     }
@@ -295,7 +296,7 @@ class Ders {
     const app = document.createElement("div");
     app.id = "ders-listesi";
 
-    chrome.runtime.sendMessage({komut: "enjeksiyonYapildi"}, function(response) {
+    chrome.runtime.sendMessage({ komut: "enjeksiyonYapildi" }, function (response) {
         htmlIndir().then(async (html) => {
 
             app.innerHTML = html;
@@ -309,14 +310,14 @@ class Ders {
             document.getElementById("daraltma-butonu").addEventListener("click",
                 () => localStorageSetItemMessage("ders-listesi-aktif", "false"));
 
-            document.getElementById("sablon-ekleme-butonu").addEventListener("click", function() {
+            document.getElementById("sablon-ekleme-butonu").addEventListener("click", function () {
                 (new Ders(
                     document.getElementById("ders-adi").value,
                     document.getElementById("ders-kodu").value,
                     document.getElementById("ders-section").value,
                     document.getElementById("ders-sablonu-secimi").value,
                     document.getElementById("ders-sablonu-secimi").selectedOptions[0].innerHTML,
-                    "denenmedi"
+                    "denenmedi",
                 )).ekle();
                 Ders.listesiniKaydet();
                 Ders.listesiniStoragedenGuncellemeMesajiGonderArkaplana();
@@ -329,22 +330,24 @@ class Ders {
                 otoDers.checked = false;
                 otoDers.disabled = true;
                 await localStorageSetItemMessage("otomatik-ders", "false");
-            } else {
+            }
+            else {
                 otoDers.disabled = false;
             }
-            otoKapca.addEventListener("change", async function() {
+            otoKapca.addEventListener("change", async function () {
                 await localStorageSetItemMessage("otomatik-kapca", String(this.checked));
                 if (!otoKapca.checked) {
                     otoDers.checked = false;
                     otoDers.disabled = true;
                     await localStorageSetItemMessage("otomatik-ders", "false");
-                } else {
+                }
+                else {
                     otoDers.disabled = false;
                 }
             });
 
             otoDers.checked = (await localStorageGetItemMessage("otomatik-ders") === "true");
-            otoDers.addEventListener("change", async function() {
+            otoDers.addEventListener("change", async function () {
                 await localStorageSetItemMessage("otomatik-ders", String(this.checked));
             });
 
@@ -358,14 +361,10 @@ class Ders {
                 await Ders.listesiniStoragedenGuncellemeMesajiGonderArkaplana();
             });
 
-
             await Ders.listesiniYukle();
             await Ders.otomatikDersSecimSonucuKontrolu();
         });
     });
-
-
-
 
     chrome.runtime.onMessage.addListener((message) => {
         switch (message.komut) {

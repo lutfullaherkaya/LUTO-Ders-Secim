@@ -1,4 +1,7 @@
-let dersListesiAktiftirStringi = localStorage.getItem("ders-listesi-aktif");
+let dersListesiAktiftirStringi = null;
+chrome.storage.sync.get(["ders-listesi-aktif"], function (result) {
+    dersListesiAktiftirStringi = result["ders-listesi-aktif"];
+});
 if (dersListesiAktiftirStringi) {
     document.getElementById("ders-listesi-aktif").checked = dersListesiAktiftirStringi === "true";
 }
@@ -13,20 +16,24 @@ function dersListesiniTemizle() {
         for (let i = 0; i < tabs.length; ++i) {
             chrome.tabs.sendMessage(tabs[i].id, message);
         }
-        localStorage.setItem("dersler", "[]");
+        chrome.storage.sync.set({ dersler: "[]" }, function () {
+            /*console.log('Value is set to ' + value);*/
+        });
     });
 }
 
-document.getElementById("ders-listesi-aktif").addEventListener("change", function() {
+document.getElementById("ders-listesi-aktif").addEventListener("change", function () {
     chrome.tabs.query({}, (tabs) => {
         let message = {
             komut: "dersListesiAktifliginiDegistir",
-            veri: this.checked
+            veri: this.checked,
         };
         for (let i = 0; i < tabs.length; ++i) {
             chrome.tabs.sendMessage(tabs[i].id, message);
         }
-        localStorage.setItem("ders-listesi-aktif", String(this.checked));
+        chrome.storage.sync.set({ "ders-listesi-aktif": String(this.checked) }, function () {
+            /*console.log('Value is set to ' + value);*/
+        });
     });
 
 });

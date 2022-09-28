@@ -13,7 +13,7 @@ function localStorageGetItemMessage(key) {
     });
 }
 
-function localStorageSetItemMessage(key, value) {
+function localStorageSetItemMessage(key, value)  {
     return new Promise((resolve, reject) => {
         chrome.runtime.sendMessage({
             komut: "setItem",

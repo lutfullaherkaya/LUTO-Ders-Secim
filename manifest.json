@@ -1,7 +1,7 @@
 {
 
   "description": "Ders seçimindeki formları önceden doldurma imkanı sağlar.",
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Odtü Teknik Üniversitesi Ders Seçme Yardımcısı",
   "version": "1.0",
   "homepage_url": "https://lutfullaherkaya.com/",
@@ -15,11 +15,10 @@
   ],
 
   "background": {
-    "scripts": ["arkaplan.js"],
-    "persistent": false
+    "service_worker": "arkaplan.js"
   },
 
-  "browser_action": {
+  "action": {
     "default_icon": "icons/default.png",
     "default_title": "Odtü Teknik Üniversitesi Ders Seçme Yardımcısı",
     "default_popup": "popup/kontrol-paneli.html"
@@ -37,10 +36,14 @@
       "all_frames": true
     }
   ],
-
   "web_accessible_resources": [
-    "/content_scripts/ders-listesi-enjeksiyonu.html",
-    "luto-logo.png"
+    {
+    "resources": ["/content_scripts/ders-listesi-enjeksiyonu.html"],
+    "matches": ["<all_urls>"]
+    },
+    {
+    "resources": ["luto-logo.png"],
+    "matches": ["<all_urls>"]
+    }
   ]
-
 }
